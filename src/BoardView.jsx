@@ -1,5 +1,5 @@
 import { useNavigate, useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import {
   Box,
@@ -7,8 +7,15 @@ import {
   FormControl,
   FormLabel,
   Input,
+  Modal,
+  ModalBody,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
   Spinner,
   Textarea,
+  useDisclosure,
   useToast,
 } from "@chakra-ui/react";
 
@@ -17,6 +24,7 @@ export function BoardView() {
   const [board, setBoard] = useState(null);
   const toast = useToast();
   const navigate = useNavigate();
+  const { isOpen, onClose, onOpen } = useDisclosure();
 
   useEffect(() => {
     axios
@@ -70,13 +78,27 @@ export function BoardView() {
         <Input type={"datetime-local"} value={board.inserted} readOnly />
       </Box>
       <Box>
-        <Button colorScheme={"purple"} onClick={handleClickRemove}>
+        <Button colorScheme={"purple"} onClick={onOpen}>
           삭제
         </Button>
         <Button colorScheme={"red"} onClick={handelClickModify}>
           수정
         </Button>
       </Box>
+
+      <Modal isOpen={isOpen} onClose={onClose}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader></ModalHeader>
+          <ModalBody>삭제하시겠습니까?</ModalBody>
+          <ModalFooter>
+            <Button onClick={onClose}>취소</Button>
+            <Button colorScheme={"red"} onClick={handleClickRemove}>
+              확인
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
     </Box>
   );
 }
