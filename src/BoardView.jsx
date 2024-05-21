@@ -47,7 +47,26 @@ export function BoardView() {
   }
 
   function handleClickRemove() {
-    axios.delete(`/api/board/${id}`);
+    axios
+      .delete(`/api/board/${id}`)
+      .then(() => {
+        toast({
+          status: "success",
+          description: `${id}번 게시물이 삭제되었습니다.`,
+          position: "top",
+        });
+        navigate("/");
+      })
+      .catch(() => {
+        toast({
+          status: "error",
+          description: `${id}번 게시물 삭제 중 오류가 발생하였습니다.`,
+          position: "top",
+        });
+      })
+      .finally(() => {
+        onClose();
+      });
   }
 
   function handelClickModify() {}
@@ -78,10 +97,10 @@ export function BoardView() {
         <Input type={"datetime-local"} value={board.inserted} readOnly />
       </Box>
       <Box>
-        <Button colorScheme={"purple"} onClick={onOpen}>
+        <Button colorScheme={"red"} onClick={onOpen}>
           삭제
         </Button>
-        <Button colorScheme={"red"} onClick={handelClickModify}>
+        <Button colorScheme={"blue"} onClick={navigate()}>
           수정
         </Button>
       </Box>
