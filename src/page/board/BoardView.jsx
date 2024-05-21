@@ -69,8 +69,6 @@ export function BoardView() {
       });
   }
 
-  function handelClickModify() {}
-
   return (
     <Box>
       <Box>{board.id}번 게시물</Box>
@@ -100,7 +98,7 @@ export function BoardView() {
         <Button colorScheme={"red"} onClick={onOpen}>
           삭제
         </Button>
-        <Button colorScheme={"blue"} onClick={navigate()}>
+        <Button colorScheme={"blue"} onClick={navigate(`/edit/${board.id}`)}>
           수정
         </Button>
       </Box>
