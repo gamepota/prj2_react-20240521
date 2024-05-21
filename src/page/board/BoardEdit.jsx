@@ -102,7 +102,7 @@ export function BoardEdit() {
           <ModalHeader></ModalHeader>
           <ModalBody> 변경하시겠습니까?</ModalBody>
           <ModalFooter>
-            <Button onClick={onclose()}>취소</Button>
+            <Button onClick={onClose}>취소</Button>
             <Button onClick={handleClickSave} colorScheme={"blue"}>
               확인
             </Button>
