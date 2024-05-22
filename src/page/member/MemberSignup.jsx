@@ -4,6 +4,8 @@ import {
   FormControl,
   FormLabel,
   Input,
+  InputGroup,
+  InputRightElement,
   useToast,
 } from "@chakra-ui/react";
 import { useState } from "react";
@@ -21,13 +23,14 @@ export function MemberSignup() {
   function handleClick() {
     setIsLoading(true);
     axios
-      .post("/api/member/signup", [email, password, nickName])
-      .then(() => {
+      .post("/api/member/signup", { email, password, nickName })
+      .then((res) => {
         toast({
           status: "success",
-          description: "회원가입이 완료되었습니다.",
+          description: "회원 가입이 완료되었습니다.",
           position: "top",
         });
+        // todo : 로그인 화면으로 이동
         navigate("/");
       })
       .catch((err) => {
@@ -57,7 +60,12 @@ export function MemberSignup() {
         <Box>
           <FormControl>
             <FormLabel>이메일</FormLabel>
-            <Input onChange={(e) => setEmail(e.target.value)} />
+            <InputGroup>
+              <Input onChange={(e) => setEmail(e.target.value)} />
+              <InputRightElement w={"75px"} mr={2}>
+                <Button size={"sm"}>중복확인</Button>
+              </InputRightElement>
+            </InputGroup>
           </FormControl>
         </Box>
         <Box>
