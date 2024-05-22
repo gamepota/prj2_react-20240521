@@ -19,10 +19,12 @@ export function MemberSignup() {
   const [passwordCheck, setPasswordCheck] = useState("");
   const [nickName, setNickName] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const toast = useToast();
-  const navigate = useNavigate();
   const [isCheckedEmail, setIsCheckedEmail] = useState(false);
   const [isCheckedNickName, setIsCheckedNickName] = useState(false);
+  const [isValidEmail, setIsValidEmail] = useState(false);
+
+  const toast = useToast();
+  const navigate = useNavigate();
 
   function handleClick() {
     setIsLoading(true);
@@ -41,13 +43,13 @@ export function MemberSignup() {
         if (err.response.status === 400) {
           toast({
             status: "error",
-            description: "입력값이 유효하지 않습니다.",
+            description: "입력값을 확인해 주세요.",
             position: "top",
           });
         } else {
           toast({
             status: "error",
-            description: "회원가입 중 문제가 발생하였습니다.",
+            description: "회원 가입 중 문제가 발생하였습니다.",
             position: "top",
           });
         }
@@ -57,7 +59,7 @@ export function MemberSignup() {
       });
   }
 
-  function handlecheckEmail() {
+  function handleCheckEmail() {
     axios
       .get(`/api/member/check?email=${email}`)
       .then((res) => {
@@ -68,7 +70,7 @@ export function MemberSignup() {
         });
       }) // 이미 있는 이메일 (사용 못함)
       .catch((err) => {
-        if (err.response.status == 404) {
+        if (err.response.status === 404) {
           // 사용할 수 있는 이메일
           toast({
             status: "info",
@@ -81,21 +83,21 @@ export function MemberSignup() {
       .finally();
   }
 
-  function handlecheckNickName() {
+  function handleCheckNickName() {
     axios
       .get(`/api/member/check?nickName=${nickName}`)
       .then((res) => {
         toast({
           status: "warning",
-          description: "중복되는 닉네임입니다.",
+          description: "사용할 수 없는 별명입니다.",
           position: "top",
         });
       })
       .catch((err) => {
-        if (err.response.status == 404) {
+        if (err.response.status === 404) {
           toast({
             status: "info",
-            description: "시용 가능한 닉네임입니다.",
+            description: "사용할 수 있는 별명입니다.",
             position: "top",
           });
           setIsCheckedNickName(true);
@@ -130,6 +132,10 @@ export function MemberSignup() {
     isDisabled = true;
   }
 
+  if (!isValidEmail) {
+    isDisabled = true;
+  }
+
   return (
     <Box>
       <Box>회원 가입</Box>
@@ -139,19 +145,30 @@ export function MemberSignup() {
             <FormLabel>이메일</FormLabel>
             <InputGroup>
               <Input
+                type={"email"}
                 onChange={(e) => {
                   setEmail(e.target.value);
                   setIsCheckedEmail(false);
+                  setIsValidEmail(!e.target.validity.typeMismatch);
                 }}
               />
-              <InputRightElement w={"75px"} mr={2}>
-                <Button onClick={handlecheckEmail} size={"sm"}>
+              <InputRightElement w={"75px"} mr={1}>
+                <Button
+                  isDisabled={!isValidEmail || email.trim().length == 0}
+                  onClick={handleCheckEmail}
+                  size={"sm"}
+                >
                   중복확인
                 </Button>
               </InputRightElement>
             </InputGroup>
             {isCheckedEmail || (
               <FormHelperText>이메일 중복확인을 해주세요.</FormHelperText>
+            )}
+            {isValidEmail || (
+              <FormHelperText>
+                올바른 이메일 형식으로 작성해 주세요.
+              </FormHelperText>
             )}
           </FormControl>
         </Box>
@@ -180,8 +197,12 @@ export function MemberSignup() {
                   setIsCheckedNickName(false);
                 }}
               />
-              <InputRightElement w={"75px"} mr={2}>
-                <Button onClick={handlecheckNickName} size={"sm"}>
+              <InputRightElement w={"75px"} mr={1}>
+                <Button
+                  isDisabled={nickName.trim().length == 0}
+                  size={"sm"}
+                  onClick={handleCheckNickName}
+                >
                   중복확인
                 </Button>
               </InputRightElement>
