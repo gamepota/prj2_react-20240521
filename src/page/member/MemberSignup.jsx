@@ -53,6 +53,29 @@ export function MemberSignup() {
       });
   }
 
+  function handlecheckEmail() {
+    axios
+      .get(`/api/member/check?email=${email}`)
+      .then((res) => {
+        toast({
+          status: "warning",
+          description: "사용할 수 없는 이메일입니다.",
+          position: "top",
+        });
+      }) // 이미 있는 이메일 (사용 못함)
+      .catch((err) => {
+        if (err.response.status == 404) {
+          // 사용할 수 있는 이메일
+          toast({
+            status: "info",
+            description: "사용할 수 있는 이메일입니다.",
+            position: "top",
+          });
+        }
+      })
+      .finally();
+  }
+
   return (
     <Box>
       <Box>회원 가입</Box>
@@ -63,7 +86,9 @@ export function MemberSignup() {
             <InputGroup>
               <Input onChange={(e) => setEmail(e.target.value)} />
               <InputRightElement w={"75px"} mr={2}>
-                <Button size={"sm"}>중복확인</Button>
+                <Button onClick={handlecheckEmail} size={"sm"}>
+                  중복확인
+                </Button>
               </InputRightElement>
             </InputGroup>
           </FormControl>
