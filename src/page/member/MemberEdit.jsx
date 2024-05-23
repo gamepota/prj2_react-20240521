@@ -62,6 +62,9 @@ export function MemberEdit() {
   if (member.password !== passwordCheck) {
     isDisabledSaveButton = true;
   }
+  if (member.nickName.trim().length === 0) {
+    isDisabledSaveButton = true;
+  }
 
   return (
     <Box>
@@ -99,7 +102,9 @@ export function MemberEdit() {
         <Box>
           <FormControl>별명</FormControl>
           <Input
-            onChange={(e) => setMember({ ...member, nickName: e.target.value })}
+            onChange={(e) =>
+              setMember({ ...member, nickName: e.target.value.trim() })
+            }
             value={member.nickName}
           />
         </Box>
