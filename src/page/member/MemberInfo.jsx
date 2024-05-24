@@ -46,7 +46,12 @@ export function MemberInfo() {
   function handleClickRemove() {
     setIsLoading(true);
     axios
-      .delete(`/api/member/${id}`, { data: { id, password } })
+      .delete(`/api/member/${id}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+        data: { id, password },
+      })
       .then(() => {
         toast({
           status: "success",
