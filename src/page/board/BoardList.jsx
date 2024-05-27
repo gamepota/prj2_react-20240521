@@ -55,18 +55,29 @@ export function BoardList() {
           </Tbody>
         </Table>
       </Box>
+
       <Box>
+        {pageInfo.prevPageNumber && (
+          <Button onClick={() => navigate(`/?page=${pageInfo.prevPageNumber}`)}>
+            이전
+          </Button>
+        )}
         {pageNumbers.map((pageNumber) => (
           <Button
             onClick={() => navigate(`/?page=${pageNumber}`)}
             key={pageNumber}
             colorScheme={
-              pageNumber === pageInfo.currentPageNymber ? "blue" : "gray"
+              pageNumber === pageInfo.currentPageNumber ? "blue" : "gray"
             }
           >
             {pageNumber}
           </Button>
         ))}
+        {pageInfo.nextPageNumber && (
+          <Button onClick={() => navigate(`/?page=${pageInfo.nextPageNumber}`)}>
+            다음
+          </Button>
+        )}
       </Box>
     </Box>
   );
