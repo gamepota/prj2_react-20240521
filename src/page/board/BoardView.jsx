@@ -1,5 +1,5 @@
 import { useNavigate, useParams } from "react-router-dom";
-import React, { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import {
   Box,
@@ -92,10 +92,10 @@ export function BoardView() {
         </FormControl>
       </Box>
       <Box>
-        {board.imageSrcList &&
-          board.imageSrcList.map((src) => (
-            <Box key={src}>
-              <Image src={src} />
+        {board.files &&
+          board.files.map((file) => (
+            <Box border={"2px solid black"} m={3} key={file.name}>
+              <Image src={file.src} />
             </Box>
           ))}
       </Box>
