@@ -89,6 +89,7 @@ export function BoardList() {
                     bgColor: "gray.200",
                   }}
                   cursor={"pointer"}
+                  prj1
                   onClick={() => navigate(`/board/${board.id}`)}
                   key={board.id}
                 >

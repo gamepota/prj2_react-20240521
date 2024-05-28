@@ -2,6 +2,7 @@ import {
   Box,
   Button,
   FormControl,
+  FormHelperText,
   FormLabel,
   Input,
   Textarea,
@@ -89,6 +90,7 @@ export function BoardWrite() {
               accept="image/*"
               onChange={(e) => setFiles(e.target.files)}
             />
+            <FormHelperText>총용량 10MB, 개당 1MB</FormHelperText>
           </FormControl>
         </Box>
         <Box>
