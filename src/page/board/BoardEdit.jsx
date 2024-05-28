@@ -1,11 +1,13 @@
 import { useNavigate, useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import {
+  Badge,
   Box,
   Button,
   Flex,
   FormControl,
+  FormHelperText,
   FormLabel,
   Image,
   Input,
@@ -29,6 +31,7 @@ export function BoardEdit() {
   const { id } = useParams();
   const [board, setBoard] = useState(null);
   const [removeFileList, setRemoveFileList] = useState([]);
+  const [addFileList, setAddFileList] = useState([]);
   const toast = useToast();
   const navigate = useNavigate();
   const { isOpen, onClose, onOpen } = useDisclosure();
@@ -38,7 +41,6 @@ export function BoardEdit() {
   }, []);
 
   function handleClickSave() {
-    axios;
     axios
       .putForm("/api/board/edit", {
         id: board.id,
@@ -70,6 +72,24 @@ export function BoardEdit() {
 
   if (board === null) {
     return <Spinner />;
+  }
+
+  const fileNameList = [];
+  for (let addFile of addFileList) {
+    // 이미 있는 파일과 중복된 파일명인지?
+    let duplicate = false;
+    for (let file of board.fileList) {
+      if (file.name === addFile.name) {
+        duplicate = true;
+        break;
+      }
+    }
+    fileNameList.push(
+      <li>
+        {addFile.name}
+        {duplicate && <Badge colorScheme="red">override</Badge>}
+      </li>,
+    );
   }
 
   function handleRemoveSwitchChange(name, checked) {
@@ -127,6 +147,23 @@ export function BoardEdit() {
                 </Box>
               </Box>
             ))}
+        </Box>
+        <Box>
+          <FormControl>
+            <FormLabel>파일</FormLabel>
+            <Input
+              multiple
+              type="file"
+              accept="image/*"
+              onChange={(e) => setAddFileList(e.target.files)}
+            />
+            <FormHelperText>
+              총 용량은 10MB, 한 파일은 1MB를 초과할 수 없습니다.
+            </FormHelperText>
+          </FormControl>
+        </Box>
+        <Box>
+          <ul>{fileNameList}</ul>
         </Box>
         <Box>
           <FormControl>
