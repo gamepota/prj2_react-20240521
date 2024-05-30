@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
 import { Box, Flex, Spacer } from "@chakra-ui/react";
+import axios from "axios";
 
 export function CommentList({ boardId }) {
   const [commentList, setCommentList] = useState([]);
   useEffect(() => {
     axios
-      .get(`.api/comment/list/${boardId}`)
+      .get(`/api/comment/list/${boardId}`)
       .then((res) => {
         setCommentList(res.data);
       })
