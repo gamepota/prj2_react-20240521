@@ -31,6 +31,7 @@ export function CommentEdit({
   const { isOpen, onClose, onOpen } = useDisclosure();
 
   function handleCommentSubmit() {
+    setIsProcessing(true);
     axios
       .put("/api/comment/edit", {
         id: comment.id,
@@ -54,6 +55,8 @@ export function CommentEdit({
         }
       })
       .finally(() => {
+        setIsProcessing(false);
+        setIsEditing(false);
         onClose();
       });
   }
@@ -74,7 +77,12 @@ export function CommentEdit({
         >
           <FontAwesomeIcon icon={faXmark} />
         </Button>
-        <Button onClick={onOpen} variant="outline" colorSchme={"blue"}>
+        <Button
+          isLoading={isProcessing}
+          onClick={onOpen}
+          variant="outline"
+          colorSchme={"blue"}
+        >
           <FontAwesomeIcon icon={faPaperPlane} />
         </Button>
         <Modal isOpen={isOpen} onClose={onClose}>
