@@ -10,15 +10,21 @@ import {
   ModalOverlay,
   Spacer,
   Stack,
+  Text,
   useDisclosure,
   useToast,
 } from "@chakra-ui/react";
-import { faPenToSquare, faTrashCan } from "@fortawesome/free-regular-svg-icons";
+import {
+  faPenToSquare,
+  faTrashCan,
+  faUser,
+} from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from "axios";
 import { useContext, useState } from "react";
 import { LoginContext } from "../LoginProvider.jsx";
 import { CommentEdit } from "./CommentEdit.jsx";
+import { faCalendarDays } from "@fortawesome/free-solid-svg-icons";
 
 export function CommentItem({ comment, isProcessing, setIsProcessing }) {
   const [isEditing, setIsEditing] = useState(false);
